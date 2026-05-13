@@ -1,5 +1,6 @@
 package com.e_commerce.project;
 
+import com.e_commerce.project.controller.CategoryController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
