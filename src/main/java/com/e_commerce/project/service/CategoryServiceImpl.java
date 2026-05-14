@@ -1,5 +1,7 @@
 package com.e_commerce.project.service;
 
+import com.e_commerce.project.exception.APIException;
+import com.e_commerce.project.exception.ResourceNotFoundException;
 import com.e_commerce.project.model.Category;
 import com.e_commerce.project.repository.CategoryRepository;
 import org.springframework.http.HttpStatus;
@@ -21,12 +23,19 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAll();
+        if(categories.isEmpty())
+            throw  new APIException("No category created till now");
+        return categories;
     }
 
     @Override
     public void createCategory(Category category) {
 
+        Category categoryDB= categoryRepository.findByCategoryName(category.getCategoryName());
+
+        if (categoryDB !=null)
+            throw new APIException("Category with the name " + category.getCategoryName()+ " already exists");
     categoryRepository.save(category);
     }
 
@@ -35,7 +44,8 @@ public class CategoryServiceImpl implements CategoryService{
 
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 
-        Category categoryDB = optionalCategory.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource Not Found"));
+        Category categoryDB = optionalCategory.orElseThrow(
+                () -> new ResourceNotFoundException("Category","categoryId",id));
 
         categoryRepository.delete(categoryDB);
 
@@ -47,7 +57,8 @@ public class CategoryServiceImpl implements CategoryService{
     public Category updateCategory(Category category, Long categoryId) {
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
 
-        Category categoryDB = optionalCategory.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+        Category categoryDB = optionalCategory.orElseThrow(() ->
+                new ResourceNotFoundException("Category","categoryId",categoryId));
 
         categoryDB.setCategoryName(category.getCategoryName());
 
