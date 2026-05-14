@@ -1,14 +1,16 @@
 package com.e_commerce.project.service;
 
 import com.e_commerce.project.model.Category;
+import com.e_commerce.project.payload.CategoryDTO;
+import com.e_commerce.project.payload.CategoryResponse;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 public interface CategoryService {
 
-    List<Category> getAllCategories();
-    void createCategory(Category category);
-    String deleteCategory(Long id);
+    CategoryResponse getAllCategories(Integer pageNumber,Integer pageSize);
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
+    CategoryDTO deleteCategory(Long id);
 
-    Category updateCategory(Category category, Long categoryId);
+    CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
 }
