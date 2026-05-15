@@ -12,4 +12,14 @@ import java.util.List;
 public class CategoryResponse {
 
     private List<CategoryDTO> content;
+
+    private Integer page;
+
+    private Integer size;
+
+    private Long totalElements;
+
+    private Integer totalPages;
+
+    private boolean last;
 }

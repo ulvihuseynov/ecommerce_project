@@ -7,6 +7,10 @@ import com.e_commerce.project.payload.CategoryDTO;
 import com.e_commerce.project.payload.CategoryResponse;
 import com.e_commerce.project.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,18 +33,34 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public CategoryResponse getAllCategories(Integer pageNumber,Integer pageSize) {
+    public CategoryResponse getAllCategories(Integer pageNumber,Integer pageSize,String sortBy,String sortDirection) {
+
+        Sort sort=sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageRequest = PageRequest.of(pageNumber, pageSize,sort);
+
 
         CategoryResponse categoryResponse=new CategoryResponse();
-        List<Category> categories = categoryRepository.findAll();
+        Page<Category> categoryPage = categoryRepository.findAll(pageRequest);
 
+        List<Category> categories=categoryPage.getContent();
         if(categories.isEmpty())
             throw  new APIException("No category created till now");
 
 
         List<CategoryDTO> categoryDTOS = categories.stream().map(
                 c -> modelMapper.map(c, CategoryDTO.class)).toList();
+
         categoryResponse.setContent(categoryDTOS);
+
+        categoryResponse.setPage(categoryPage.getNumber());
+        categoryResponse.setSize(categoryPage.getSize());
+        categoryResponse.setTotalPages(categoryPage.getTotalPages());
+        categoryResponse.setTotalElements(categoryPage.getTotalElements());
+        categoryResponse.setLast(categoryPage.isLast());
+
         return categoryResponse;
     }
 

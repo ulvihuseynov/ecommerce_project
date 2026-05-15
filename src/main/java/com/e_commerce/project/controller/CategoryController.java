@@ -1,5 +1,6 @@
 package com.e_commerce.project.controller;
 
+import com.e_commerce.project.config.AppConstants;
 import com.e_commerce.project.model.Category;
 import com.e_commerce.project.payload.CategoryDTO;
 import com.e_commerce.project.payload.CategoryResponse;
@@ -24,9 +25,11 @@ private final CategoryService categoryService;
 
     @GetMapping("/public/categories")
     //@RequestMapping(value = "/public/categories",method = RequestMethod.GET)
-    public ResponseEntity<CategoryResponse>getAllCategories (@RequestParam(name="pageNumber") Integer pageNumber,
-                                                             @RequestParam(name="pageSize")Integer pageSize){
-        return new ResponseEntity<>(categoryService.getAllCategories(pageNumber,pageSize),HttpStatus.OK);
+    public ResponseEntity<CategoryResponse>getAllCategories (@RequestParam(name="pageNumber",defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                             @RequestParam(name="pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false)Integer pageSize,
+                                                              @RequestParam(name="sortBy",defaultValue = AppConstants.SORT_CATEGORIES_BY,required = false) String sortBy,
+                                                               @RequestParam(name="sortDirection",defaultValue = AppConstants.SORT_DIR,required = false) String sortDirection){
+        return new ResponseEntity<>(categoryService.getAllCategories(pageNumber,pageSize,sortBy,sortDirection),HttpStatus.OK);
     }
 
     @PostMapping("/public/categories")
