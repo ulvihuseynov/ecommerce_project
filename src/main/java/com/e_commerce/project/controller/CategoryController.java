@@ -35,9 +35,9 @@ private final CategoryService categoryService;
     @PostMapping("/public/categories")
     public ResponseEntity<CategoryDTO> createCategory (@Valid @RequestBody CategoryDTO categoryDTO){
 
-        CategoryDTO savedDategoryDto = categoryService.createCategory(categoryDTO);
+        CategoryDTO savedCategoryDto = categoryService.createCategory(categoryDTO);
 
-        return new ResponseEntity<>(savedDategoryDto,HttpStatus.CREATED);
+        return new ResponseEntity<>(savedCategoryDto,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
