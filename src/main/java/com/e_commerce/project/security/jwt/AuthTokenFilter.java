@@ -1,5 +1,6 @@
 package com.e_commerce.project.security.jwt;
 
+import com.e_commerce.project.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +21,11 @@ import java.io.IOException;
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     private  final JwtUtils jwtUtils;
-    private  final UserDetailsService userDetailsService;
+    private  final UserDetailsServiceImpl userDetailsService;
 
     private final static Logger logger= LoggerFactory.getLogger(AuthTokenFilter.class);
 
-    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsService userDetailsService) {
+    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
         this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
     }
@@ -59,7 +60,8 @@ authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(requ
 
     private String parserJwt(HttpServletRequest request) {
 
-        String jwt=jwtUtils.getJwtFromHeader(request);
+//        String jwt=jwtUtils.getJwtFromHeader(request);
+        String jwt=jwtUtils.getJwtFromCookies(request);
 
         logger.debug("AuthTokenFilter.java {} ",jwt);
         return jwt;
