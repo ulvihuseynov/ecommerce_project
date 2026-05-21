@@ -70,6 +70,15 @@ public class JwtUtils {
 
     }
 
+    public ResponseCookie getCleanJwtCookie( ){
+
+        return ResponseCookie.from(
+                        jwtCookie,null)
+                .path("/api")
+                .build();
+
+
+    }
     public String generateTokenFromUserName(String  userName) {
         return Jwts.builder()
                 .subject(userName)
