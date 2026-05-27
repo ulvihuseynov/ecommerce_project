@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem,Long> {
     @Query("SELECT ci From CartItem ci WHERE ci.product.id=?1 AND ci.cart.id=?2")
-    CartItem findCartItemByProductIdAndCartId(Long cartId, Long productId);
+    CartItem findCartItemByProductIdAndCartId( Long productId,Long cartId);
 
     @Modifying
     @Query("Delete  From CartItem ci Where ci.product.id=?1 And ci.cart.id=?2")
-    void deleteCartItemByProductIdAndCartId(Long cartId, Long productId);
+    void deleteCartItemByProductIdAndCartId(Long productId, Long cartId);
 }

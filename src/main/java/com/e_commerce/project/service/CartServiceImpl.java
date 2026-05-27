@@ -141,7 +141,7 @@ public class CartServiceImpl implements CartService{
                     + " less than or equal to the quantity " + product.getQuantity());
         }
 
-        CartItem cartItem=cartItemRepository.findCartItemByProductIdAndCartId(cartId,productId);
+        CartItem cartItem=cartItemRepository.findCartItemByProductIdAndCartId(productId,cartId);
         if (cartItem==null){
             throw new APIException("Product "+ product.getProductName()+ " not available in the cart!!");
         }
@@ -192,7 +192,7 @@ public class CartServiceImpl implements CartService{
         }
         cart.setTotalPrice(cart.getTotalPrice()-(cartItem.getProductPrice()*cartItem.getQuantity()));
 
-        cartItemRepository.deleteCartItemByProductIdAndCartId(cartId,productId);
+        cartItemRepository.deleteCartItemByProductIdAndCartId(productId,cartId);
         return "Product " + cartItem.getProduct().getProductName() + " removed from the cart!!";
     }
 
