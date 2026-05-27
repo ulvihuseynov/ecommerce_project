@@ -16,7 +16,7 @@ public class ProductDTO {
     private String productName;
 
     @NotBlank
-    @Size(min = 5,max = 40, message = "Product description name must contain at least 5 and 40 characters")
+    @Size(min = 5, message = "Product description name must contain at least 5 characters")
     private String description;
     private String image;
 

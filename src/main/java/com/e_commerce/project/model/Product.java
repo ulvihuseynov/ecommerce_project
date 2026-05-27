@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -33,4 +36,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user;
+
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST,CascadeType.MERGE},
+            orphanRemoval = true,fetch = FetchType.EAGER)
+    private List<CartItem> cartItems=new ArrayList<>();
 }
